@@ -1,0 +1,113 @@
+/* pages/liuyan/liuyan.wxss */
+/* pages/index/index.wxss */
+.pinglunview{
+  max-height: 500rpx;
+  overflow: scroll;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadein 1s ease forwards;
+}
+.text-contentcenter{
+    padding-left: 30rpx;
+    padding-right: 20rpx;
+    padding-bottom: 30rpx;
+    width: 100%;
+    font-size: 30rpx;
+    letter-spacing: 1px;
+
+}
+
+
+
+.van-cell-text{
+  font-size: 20rpx !important;
+  color: #80848f !important;
+}
+.tiao{
+ font-size: 35rpx !important;
+ color: #1c2438 !important;
+ width: 400rpx !important;
+ 
+}
+.fabu{
+ position: fixed;
+ bottom: 200rpx;
+ right: 50rpx;
+ width: 100rpx;
+ height: 100rpx;
+ display: flex;
+ justify-content: center;
+
+ align-items: center;
+}
+.fabu image{
+ width: 90%;
+ height: 90%;
+}
+
+.tu{
+ width: 500rpx;
+ display: flex;
+ flex-direction: row;
+ justify-content: space-around;
+ align-items: center;
+}
+.fl{
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ align-items: center;
+}
+.img2{
+ width: 210rpx;
+ height: 210rpx;
+
+}
+.img2 view{
+color: red;
+z-index: 5;
+position: relative; 
+width: 20rpx;
+height: 20rpx;
+margin-top:0rpx;
+margin-left: 90%;
+}
+.img2 image{
+width: 190rpx;
+height: 190rpx;
+position: relative;
+z-index: 5;
+}
+
+.zi{
+ font-size: 30rpx !important;
+ color: #495060 !important;
+}
+.im_ban{
+ width: 90%;
+ height: 250rpx;
+ margin-left: 5%;
+ margin-top: 20rpx;
+ border-radius: 20rpx;
+ margin-bottom: 20rpx;
+}
+.jia{
+  position: fixed;
+  right: 80rpx;
+  bottom: 200rpx;
+  z-index: 9;
+  background-color: white;
+  border-radius: 70rpx;
+
+}

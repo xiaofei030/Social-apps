@@ -1,0 +1,104 @@
+<!--pages/message/message.wxml-->
+<wxs src="../../common.wxs" module="morejs" />
+<view class="cu-load load-modal" wx:if="{{loading}}">
+    <view class="cuIcon-loading text-orange"></view>
+    <view class="gray-text">加载中...</view>
+</view>
+
+<van-tabs active="{{ active }}"  bind:change="tabChange">
+  <van-tab title="回复我的{{pinglunCount>0?'('+pinglunCount+')':''}}"></van-tab>
+  <van-tab title="收到的点赞{{likeCount>0?'('+likeCount+')':''}}"></van-tab>
+  <van-tab title="收到的收藏{{shoucangCount>0?'('+shoucangCount+')':''}}"></van-tab>
+</van-tabs>
+<block wx:if="{{list.length===0}}">
+      <van-empty description="空空如也" image="search"/>
+</block>
+<!--以下是展示评论区域-->
+<view class="pinglunview">
+      <!--展示一条条评论区域-->
+      <view class="cu-list menu-avatar comment solids-top">
+        <view class="cu-item" wx:for="{{list}}" wx:key="index">
+          <view class="cu-avatar round">
+              <image class="cu-avatar round" src="{{item.avatarUrl}}"/>
+              <view wx:if="{{!item.readEnd}}" class="cu-tag badge cuIcon-noticefill bg-red"></view>
+          </view>
+          <view class="content">
+            <view class="text-grey">{{item.nickName}}</view>
+            <view wx:if="{{item.type==1}}" class="text-gray text-content text-df">
+              评论了你的说说：{{item.content}}
+            </view>
+            <view wx:if="{{item.type==2}}" class="text-gray text-content text-df">
+              回复了你的评论：{{item.content}}
+            </view>
+            <view wx:if="{{item.type==3}}" class="text-gray text-content text-df">
+              点赞了你的说说
+            </view>
+            <view wx:if="{{item.type==4}}" class="text-gray text-content text-df">
+              点赞了你的评论
+            </view>
+            <view wx:if="{{item.type==5}}" class="text-gray text-content text-df">
+              收藏了你的说说
+            </view>
+            <!--展示评论图片-->
+            <block wx:if="{{item.pinglunImg.length>0}}">
+                <image lazy-load bindtap="previewImage" data-item="{{item}}" data-url="{{item.pinglunImg}}" style="width: 120rpx;height: 120rpx;" mode="aspectFill" src="{{item.pinglunImg[0]}}"></image>
+            </block>
+            <!--展示所需要回复的评论-->
+            <view wx:if="{{item.type==1||item.type==3||item.type==5}}" class="bg-grey padding-sm radius margin-top-sm  text-sm">
+              <view class="flex">
+                <view class="flex-sub"><rich-text nodes="说说：{{item.shuoContent}}"></rich-text></view>
+              </view>
+            </view>
+            <view wx:if="{{item.type==2}}" class="bg-grey padding-sm radius margin-top-sm  text-sm">
+              <view class="flex">
+                <view>{{item.toNickName}}：</view>
+                <view class="flex-sub">{{item.toContent}}</view>
+              </view>
+            </view>
+            <view wx:if="{{item.type==4}}" class="bg-grey padding-sm radius margin-top-sm  text-sm">
+              <view class="flex">
+                <view>{{item.toNickName}}：</view>
+                <view class="flex-sub">{{item.content}}</view>
+              </view>
+            </view>
+            <view class="margin-top-sm flex justify-between">
+              <view class="text-gray text-df">{{morejs.timelog(item.creat,'')}}</view>
+              <view wx:if="{{item.type==1||item.type==2}}" catch:tap="addhuifu" data-item="{{item}}">回复</view>
+            </view>
+          </view>
+        </view>
+      </view>
+</view>
+
+<!--弹窗发送评论-->
+<view class="cu-modal bottom-modal {{pinglunShow?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+      <view class="action" catch:tap="closePinglun">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+    <!--展示上传的评论图片-->
+    <view class="cu-form-group" wx:if="{{pinglunImgList.length>0}}">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{pinglunImgList}}" wx:key="index">
+        <image src="{{item}}" style="margin-left: -80rpx;"></image>
+          <view class="cu-tag bg-red" catch:tap="DelImg" data-index="index">
+            <text class='cuIcon-close'></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  <!--输入评论区域-->
+		<view style="width: 100% !important;">
+            <view class="cu-bar input" style="width: 100% !important;">
+                <!-- <image class="cu-avatar round" mode="aspectFill" src="{{avatarUrl}}"></image> -->
+                <input placeholder="说点什么" value="{{content}}"	focus="{{focus}}"	confirm-type="send" 	bindinput="inputPinglun" class="solid-bottom" maxlength="50" cursor-spacing="10"></input>
+                <view class="action" catch:tap="chooseImg">
+                    <text class="cuIcon-cameraadd text-grey"></text>
+                </view>
+                <button class="cu-btn bg-green shadow-blur" style="width:150rpx !important;" catch:tap="sendPinglun">回复</button>
+            </view>
+		</view>
+	</view>
+</view>

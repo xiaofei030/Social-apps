@@ -1,0 +1,66 @@
+{
+  "pages": [
+    "pages/yuleshuo/yuleshuo",
+    "pages/addshuo/addshuo",
+    "pages/my/my",
+    "pages/message/message",
+    "pages/myshuo/myshuo"
+  ],
+  "tabBar": {
+    "color": "#80848f",
+    "selectedColor": "#2d8cf0",
+    "borderStyle": "white",
+    "list": [
+      {
+        "text": "说说",
+        "pagePath": "pages/yuleshuo/yuleshuo",
+        "iconPath": "images/shuo.png",
+        "selectedIconPath": "images/shuo2.png"
+      },
+      {
+        "text": "发布",
+        "pagePath": "pages/addshuo/addshuo",
+        "iconPath": "images/send.png",
+        "selectedIconPath": "images/send2.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/my/my",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my2.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2d8cf0",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "components/colorui/components/cu-custom",
+    "van-field": "vant/field/index",
+    "van-cell-group": "vant/cell-group/index",
+    "van-checkbox": "vant/checkbox/index",
+    "van-checkbox-group": "vant/checkbox-group/index",
+    "van-button": "vant/button/index",
+    "van-dropdown-menu": "vant/dropdown-menu/index",
+    "van-dropdown-item": "vant/dropdown-item/index",
+    "van-notice-bar": "vant/notice-bar/index",
+    "van-rate": "vant/rate/index",
+    "van-empty": "vant/empty/index",
+    "van-cell": "vant/cell/index",
+    "van-tab": "vant/tab/index",
+    "van-tabs": "vant/tabs/index",
+    "van-search": "vant/search/index",
+    "van-overlay": "vant/overlay/index",
+    "van-divider": "vant/divider/index",
+    "van-grid": "vant/grid/index",
+    "van-card": "vant/card/index",
+    "van-image": "vant/image/index",
+    "van-loading": "vant/loading/index",
+    "van-grid-item": "vant/grid-item/index"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

@@ -1,0 +1,36 @@
+<!--pages/publish/publish.wxml-->
+<avatarNicknameModal showAvaModal="{{showAvaModal}}" bind:getAvaNickData="getAvaNickData"></avatarNicknameModal>
+
+<view class="editor-view">
+  <rich-text class="highlight" nodes="{{code}}" />
+  <editor id="editor" class="editor" placeholder="请输入说说" bindinput="input" />
+</view>
+<view class="descCenter">{{desc_counts}}/100</view>
+
+<view class="img">
+    <block wx:for="{{ fileList }}" wx:key="index">
+      <view class="img2">
+        <view bindtap="delete" data-id="{{index}}">x</view>
+        <image mode="aspectFill" bindtap="previewImage" data-url="{{item}}" src="{{item}}"></image>
+      </view> 
+    </block>
+    <image wx:if="{{fileList.length<9}}" bindtap="uploadToCloud" style="width: 200rpx;height: 200rpx;" src="/images/xiangji.png"></image>
+</view>
+
+
+<view class="fabu">
+  <van-button round bind:click="check" custom-style="margin-top:50rpx;margin-bottom:50rpx;" type="info">立即发表</van-button>
+</view>
+
+<view class="des">
+   温馨提示:
+</view>
+<view style="width: 94%;margin-left: 3%;">
+  <view class="des">1.尽情释放你的分享欲</view>
+  <view class="des">2.请友好发言，共同维护健康分享圈</view>
+  <view class="des">3.程序已采用腾讯内容安全接口对发表内容进行违规检测，请自爱自重</view>
+</view>
+
+
+
+

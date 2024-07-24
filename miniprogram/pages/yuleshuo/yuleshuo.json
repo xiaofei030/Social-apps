@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "avatarNicknameModal":"../../components/avatarNicknameModal/avatarNicknameModal"
+  },
+  "navigationBarTitleText": "分享圈",
+  "enablePullDownRefresh": true
+}

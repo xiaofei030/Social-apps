@@ -1,0 +1,136 @@
+<!--pages/index/index.wxml-->
+<wxs src="../../common.wxs" module="morejs" />
+
+<avatarNicknameModal showAvaModal="{{showAvaModal}}" bind:getAvaNickData="getAvaNickData"></avatarNicknameModal>
+
+<view class="cu-load load-modal" wx:if="{{loading}}">
+    <view class="cuIcon-loading text-orange"></view>
+    <view class="gray-text">加载中...</view>
+</view>
+
+<block wx:if="{{list.length!==0}}" wx:for="{{list}}" wx:key="index">
+    <view wx:if="{{item.show}}" class="cu-card dynamic" :class="isCard?'no-card':''">
+      <view class="cu-item shadow">
+        <!--说说头像昵称-->
+        <view class="cu-list menu-avatar">
+          <view class="cu-item">
+            <image class="cu-avatar round lg" src="{{item.avatarUrl}}"></image>
+            <view class="content flex-sub">
+              <view>{{item.nickName}}</view>
+              <view class="text-gray text-sm flex justify-between">
+                {{morejs.timelog(item.creat,'发布')}}
+              </view>
+            </view>
+          </view>
+        </view>
+        <!--说说内容-->
+        <view class="text-contentcenter">
+         <rich-text nodes="{{item.content}}"></rich-text> 
+        </view>
+        <!--说说图片-->
+        <view class="grid flex-sub padding-lr" :class="{{fileList}}?'col-3 grid-square':'col-1'">
+            <block wx:for="{{item.fileList}}" wx:key="index" wx:for-item="shuoimg">
+              <image lazy-load bindtap="previewImage" data-item="{{item}}" data-url="{{item.fileList}}" style="width: 200rpx;height: 200rpx;" mode="aspectFill" src="{{shuoimg}}"></image>
+            </block>
+        </view>
+        <!--说说点赞、收藏...区域-->
+        <view class="text-gray text-xxl text-right padding">
+          <text class="cuIcon-attentionfill margin-lr-xs"></text> {{item.viewCount}}
+          <text catch:tap="doLike" data-item="{{item}}" data-index="{{index}}" class="cuIcon-appreciatefill {{item.isLike?'text-red':''}}"></text> {{item.likeCount}}
+          <text catch:tap="doShoucang" data-item="{{item}}" data-index="{{index}}" class="cuIcon-favorfill {{item.isShoucang?'text-red':''}}"></text> {{item.shoucangCount}}
+          <text class="cuIcon-messagefill margin-lr-xs"></text> {{item.pinglunCount}}
+          <text wx:if="{{item._openid==openid}}" catch:tap="setNoShowPinglun" data-index="{{index}}" data-item="{{item}}" class="{{item.show?'cuIcon-attentionfill':'cuIcon-attentionforbidfill'}} text-gray margin-left-sm"></text>
+          <text wx:if="{{item._openid==openid}}" catch:tap="deleteShuo" data-id="{{item._id}}" class="cuIcon-delete text-gray margin-left-sm"></text>
+        </view>
+        <!--发表评论区域-->
+        <van-cell value="发表评论" catch:tap="addPinglun" data-item="{{item}}" data-index="{{index}}"/>
+        <!--查看x条评论区域-->
+        <view hidden="{{item.pinglunCount==0}}">
+            <view hidden="{{clickId==item._id&&pinglunList.length>0}}">
+                    <van-divider catch:tap="toDown" data-view="{{item.isView}}" data-id="{{item._id}}" hairline contentPosition="center">查看{{item.pinglunCount}}条评论</van-divider>
+            </view>
+        </view>
+
+        <!--以下是展示评论区域-->
+        <view class="pinglunview {{clickId==item._id?'fade-in':''}}">
+              <!--展示一条条评论区域-->
+              <view class="cu-list menu-avatar comment solids-top" hidden="{{shuoid!==item._id}}">
+                <view class="cu-item" wx:for="{{pinglunList}}" wx:key="index" wx:for-item="pinglunItem">
+                  <image class="cu-avatar round" src="{{pinglunItem.avatarUrl}}"></image>
+                  <view class="content">
+                    <view class="text-grey">{{pinglunItem.nickName}}</view>
+                    <view class="text-gray text-content text-df">
+                      {{pinglunItem.content}}
+                    </view>
+                    <!--展示评论图片-->
+                    <block wx:if="{{pinglunItem.pinglunImg.length>0}}">
+                        <image lazy-load bindtap="previewImage" data-item="{{item}}" data-url="{{pinglunItem.pinglunImg}}" style="width: 120rpx;height: 120rpx;" mode="aspectFill" src="{{pinglunItem.pinglunImg[0]}}"></image>
+                    </block>
+                    <!--展示所需要回复的评论-->
+                    <view hidden="{{!pinglunItem.toContent}}" class="bg-grey padding-sm radius margin-top-sm  text-sm">
+                      <view class="flex">
+                        <view>{{pinglunItem.toNickName}}：</view>
+                        <view class="flex-sub text-cut">{{pinglunItem.toContent}}</view>
+                      </view>
+                    </view>
+                    <!--点赞和回复评论的区域-->
+                    <view class="margin-top-sm flex justify-between">
+                      <view class="text-gray text-df">{{morejs.timelog(pinglunItem.creat,'')}}</view>
+                      <view class="text-xl">
+                        <text catch:tap="doPinglunLike" data-index="{{index}}" data-item="{{pinglunItem}}" class="cuIcon-appreciatefill {{pinglunItem.isLike?'text-red':'text-gray'}}">{{pinglunItem.likeCount}}</text>
+                        <text catch:tap="addPinglun" data-item="{{item}}" data-plitem="{{pinglunItem}}" class="cuIcon-messagefill text-gray margin-left-sm"></text>
+                        <text wx:if="{{pinglunItem._openid==openid}}" catch:tap="deletePinglun" data-item="{{item}}" data-id="{{pinglunItem._id}}" class="cuIcon-delete text-gray margin-left-sm"></text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view hidden="{{clickId!==item._id}}">
+                  <view hidden="{{pinglunList.length==0}}">
+                    <van-divider catch:tap="shouDown" data-id="{{item._id}}" hairline contentPosition="center">收起评论</van-divider>
+                  </view>
+                  <view hidden="{{plNomore||pinglunList.length==0}}">
+                    <van-divider catch:tap="toDownMore" data-id="{{item._id}}" hairline contentPosition="center">查看更多评论</van-divider>
+                  </view>
+              </view>
+        </view>
+      </view>
+    </view>
+</block>
+<block wx:if="{{list.length===0}}">
+      <van-empty description="空空如也" image="search"/>
+</block>
+<!--弹窗发送评论-->
+<view class="cu-modal bottom-modal {{pinglunShow?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+      <view class="action" catch:tap="closePinglun">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+    <!--展示上传的评论图片-->
+    <view class="cu-form-group" wx:if="{{pinglunImgList.length>0}}">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{pinglunImgList}}" wx:key="index">
+        <image src="{{item}}" style="margin-left: -80rpx;"></image>
+          <view class="cu-tag bg-red" catch:tap="DelImg" data-index="index">
+            <text class='cuIcon-close'></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  <!--输入评论区域-->
+		<view style="width: 100% !important;">
+            <view class="cu-bar input" style="width: 100% !important;">
+                <!-- <image class="cu-avatar round" mode="aspectFill" src="{{avatarUrl}}"></image> -->
+                <input placeholder="说点什么" value="{{content}}"	focus="{{focus}}"	confirm-type="send" 	bindinput="inputPinglun" class="solid-bottom" maxlength="50" cursor-spacing="10"></input>
+                <view class="action" catch:tap="chooseImg">
+                    <text class="cuIcon-cameraadd text-grey"></text>
+                </view>
+                <button class="cu-btn bg-green shadow-blur" style="width:150rpx !important;" catch:tap="sendPinglun">发表</button>
+            </view>
+		</view>
+	</view>
+</view>
+
+

@@ -1,0 +1,23 @@
+<!--pages/my/my.wxml-->
+<view class="top">
+     <view class="avtar">
+        <image wx:if="{{!avatarUrl}}" style="width:140rpx;height:140rpx" src="/images/my.png"></image>
+        <image wx:if="{{avatarUrl}}" style="width:150rpx;height:150rpx" src="{{avatarUrl}}"></image>
+     </view>
+     <button wx:if="{{!avatarUrl}}" type="primary" style="font-size: 32rpx;" bindtap="open">点击授权头像</button>
+     <view wx:if="{{avatarUrl}}" type="default" style="font-size: 35rpx;">{{nickName}}</view>
+</view>
+
+<avatarNicknameModal showAvaModal="{{showAvaModal}}" bind:getAvaNickData="getAvaNickData"></avatarNicknameModal>
+
+<view class="cu-load load-modal" wx:if="{{loading}}">
+    <view class="cuIcon-loading text-orange"></view>
+    <view class="gray-text">加载中...</view>
+</view>
+
+<view class="center">
+    <van-grid  center column-num="2">       
+              <van-grid-item bind:tap="go" data-url="/pages/myshuo/myshuo" icon="/images/myshuo.png" text="我的说说"/>     
+              <van-grid-item bind:tap="go" data-url="/pages/message/message" icon="/images/message.png" text="我的消息" badge="{{badge}}"/>
+    </van-grid>
+</view>

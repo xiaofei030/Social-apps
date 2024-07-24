@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "avatarNicknameModal":"../../components/avatarNicknameModal/avatarNicknameModal"
+  },
+  "navigationBarTitleText": "我的说说",
+  "enablePullDownRefresh": true
+}
